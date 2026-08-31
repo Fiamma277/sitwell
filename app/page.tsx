@@ -44,11 +44,11 @@ function todayKey() {
   return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
 }
 
-function ClaudeMark({ active, started }: { active: boolean; started: boolean }) {
+function ClaudeMark() {
   return (
     <svg
       aria-hidden="true"
-      className={`breathing-mark ${started ? 'is-active' : ''} ${started && !active ? 'is-paused' : ''}`}
+      className="breathing-mark"
       viewBox="0 0 24 24"
     >
       <path d={CLAUDE_MARK_PATH} fill="currentColor" />
@@ -85,6 +85,10 @@ export default function Home() {
   const trainingRound = Math.min(
     TRAINING_ROUNDS,
     Math.floor(trainingSeconds / TRAINING_CYCLE_SECONDS) + 1,
+  );
+  const completedTrainingRounds = Math.min(
+    TRAINING_ROUNDS,
+    Math.floor(trainingSeconds / TRAINING_CYCLE_SECONDS),
   );
 
   useEffect(() => {
@@ -151,7 +155,7 @@ export default function Home() {
       });
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [trainingActive]);
+  }, [trainingActive, trainingRunId]);
 
   function selectMode(nextMode: TimerMode) {
     setMode(nextMode);
@@ -282,11 +286,28 @@ export default function Home() {
             <Button aria-label="跳到下一阶段" onClick={skipPhase} size="icon-lg" variant="outline"><SkipForward /></Button>
           </div>
 
-          <p className="timer-footnote">
-            {phase === 'sit'
-              ? '计时结束后，尽量轻走、接水或舒展，而不只是站在原地。'
-              : '慢慢活动即可，不需要剧烈运动。完成后会自动开始下一轮。'}
-          </p>
+          <div className="timer-support">
+            <p className="timer-footnote">
+              {phase === 'sit'
+                ? '计时结束后，尽量轻走、接水或舒展，而不只是站在原地。'
+                : '慢慢活动即可，不需要剧烈运动。完成后会自动开始下一轮。'}
+            </p>
+            <div aria-hidden={mode !== 'custom'} className={`custom-settings-slot ${mode === 'custom' ? 'is-visible' : ''}`}>
+              <div aria-label="自定义计时时长" className="custom-settings">
+                <label htmlFor="custom-sit-minutes">
+                  久坐
+                  <Input id="custom-sit-minutes" max={120} min={1} onChange={(event) => updateCustom('sit', Number(event.target.value) || 1)} tabIndex={mode === 'custom' ? 0 : -1} type="number" value={customSit} />
+                  <span>分钟</span>
+                </label>
+                <i>＋</i>
+                <label htmlFor="custom-move-minutes">
+                  活动
+                  <Input id="custom-move-minutes" max={30} min={1} onChange={(event) => updateCustom('move', Number(event.target.value) || 1)} tabIndex={mode === 'custom' ? 0 : -1} type="number" value={customMove} />
+                  <span>分钟</span>
+                </label>
+              </div>
+            </div>
+          </div>
           </article>
 
           <section aria-label="计时模式" className="mode-switcher">
@@ -296,25 +317,9 @@ export default function Home() {
             <button aria-pressed={mode === 'focus'} className="mode-option" onClick={() => selectMode('focus')} type="button">
               <span><strong>专注模式</strong><small>少些打断</small></span><b>40 + 5</b>
             </button>
-            <div className={`mode-option custom-mode-option ${mode === 'custom' ? 'is-selected' : ''}`}>
-              <button aria-pressed={mode === 'custom'} className="custom-mode-trigger" onClick={() => selectMode('custom')} type="button">
-                <span><strong>自定义</strong><small>按你的节奏</small></span><b>{customSit} + {customMove}</b>
-              </button>
-              {mode === 'custom' && (
-                <div aria-label="自定义计时时长" className="custom-inline-settings">
-                  <label htmlFor="custom-sit-minutes">
-                    <span>坐</span>
-                    <Input aria-label="久坐分钟" id="custom-sit-minutes" max={120} min={1} onChange={(event) => updateCustom('sit', Number(event.target.value) || 1)} type="number" value={customSit} />
-                  </label>
-                  <i>+</i>
-                  <label htmlFor="custom-move-minutes">
-                    <span>动</span>
-                    <Input aria-label="活动分钟" id="custom-move-minutes" max={30} min={1} onChange={(event) => updateCustom('move', Number(event.target.value) || 1)} type="number" value={customMove} />
-                  </label>
-                  <em>分钟</em>
-                </div>
-              )}
-            </div>
+            <button aria-pressed={mode === 'custom'} className="mode-option" onClick={() => selectMode('custom')} type="button">
+              <span><strong>自定义</strong><small>按你的节奏</small></span><b>{customSit} + {customMove}</b>
+            </button>
           </section>
         </div>
 
@@ -324,17 +329,33 @@ export default function Home() {
           <p className="training-subtitle">3 秒收紧 · 3 秒放松 · 15 次为一组</p>
 
           <div className={`training-stage ${trainingPhase}`}>
-            <div className="mark-halo"><ClaudeMark active={trainingActive} key={trainingRunId} started={trainingActive || (trainingSeconds > 0 && trainingSeconds < TRAINING_TOTAL_SECONDS)} /></div>
+            <div className="mark-halo"><ClaudeMark /></div>
             <div aria-live="polite" className="training-cue">
               {trainingSeconds >= TRAINING_TOTAL_SECONDS ? (
                 <><strong>本组完成</strong><span>让盆底自然放松一会</span></>
               ) : trainingActive ? (
-                <><strong>{trainingPhase === 'contract' ? '轻轻收紧' : '慢慢放松'}</strong><span>{trainingCountdown} · 第 {trainingRound}/{TRAINING_ROUNDS} 次</span></>
+                <>
+                  <strong>{trainingPhase === 'contract' ? '轻轻收紧' : '完全放松'}</strong>
+                  <span className="training-countdown"><b>{trainingCountdown}</b><small>秒</small></span>
+                  <span>第 {trainingRound}/{TRAINING_ROUNDS} 次 · 保持当前状态</span>
+                </>
               ) : trainingSeconds > 0 ? (
                 <><strong>训练已暂停</strong><span>第 {trainingRound}/{TRAINING_ROUNDS} 次 · 点击继续</span></>
               ) : (
                 <><strong>准备好了吗？</strong><span>跟随节奏完成 15 次</span></>
               )}
+            </div>
+          </div>
+
+          <div className="training-progress">
+            <div><span>本组进度</span><b>{completedTrainingRounds}/{TRAINING_ROUNDS}</b></div>
+            <div aria-label={`已完成 ${completedTrainingRounds} 次，共 ${TRAINING_ROUNDS} 次`} className="training-progress-dots">
+              {Array.from({ length: TRAINING_ROUNDS }, (_, index) => (
+                <i
+                  className={index < completedTrainingRounds ? 'is-done' : index === trainingRound - 1 && trainingSeconds < TRAINING_TOTAL_SECONDS ? 'is-current' : ''}
+                  key={index}
+                />
+              ))}
             </div>
           </div>
 
