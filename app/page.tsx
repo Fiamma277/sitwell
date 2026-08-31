@@ -325,14 +325,14 @@ export default function Home() {
 
         <article className="training-card">
           <div className="training-topline"><span>盆底肌训练</span><span>今日 {completedTraining} 组</span></div>
-          <h2>跟着图标，收紧与放松</h2>
+          <h2>跟着图标，收紧与放松 🌼</h2>
           <p className="training-subtitle">3 秒收紧 · 3 秒放松 · 15 次为一组</p>
 
           <div className={`training-stage ${trainingPhase}`}>
             <div className="mark-halo"><ClaudeMark /></div>
             <div aria-live="polite" className="training-cue">
               {trainingSeconds >= TRAINING_TOTAL_SECONDS ? (
-                <><strong>本组完成</strong><span>让盆底自然放松一会</span></>
+                <><strong>本组完成</strong><span>让盆底肌自然放松一会</span></>
               ) : trainingActive ? (
                 <>
                   <strong>{trainingPhase === 'contract' ? '轻轻收紧' : '完全放松'}</strong>

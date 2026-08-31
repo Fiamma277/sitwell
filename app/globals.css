@@ -82,19 +82,24 @@
 ::selection { background: #d9775733; }
 
 .site-shell {
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  min-height: 620px;
+  overflow: hidden;
   background:
     radial-gradient(circle at 8% 8%, #fff9ed 0, transparent 24rem),
     radial-gradient(circle at 94% 36%, #e8d9ca80 0, transparent 30rem),
     var(--background);
-  padding: 0 clamp(1rem, 4vw, 4.5rem) 2.5rem;
+  padding: 0 clamp(1rem, 4vw, 4.5rem) 0.9rem;
 }
 
 .topbar {
   align-items: center;
   border-bottom: 1px solid color-mix(in srgb, var(--border) 76%, transparent);
   display: flex;
-  height: 74px;
+  flex: 0 0 62px;
+  height: 62px;
   justify-content: space-between;
   margin: 0 auto;
   max-width: 1440px;
@@ -127,9 +132,11 @@
 .notification-button { border-radius: 999px; height: 2.4rem; padding: 0 1rem; }
 
 .intro {
+  flex: 0 0 auto;
   margin: 0 auto;
   max-width: 1440px;
-  padding: clamp(2.7rem, 6vw, 5rem) 0 clamp(1.9rem, 3vw, 3rem);
+  padding: clamp(0.75rem, 2.2vh, 1.5rem) 0 clamp(0.7rem, 1.8vh, 1.2rem);
+  width: 100%;
 }
 
 .eyebrow {
@@ -137,13 +144,13 @@
   font-size: 0.75rem;
   font-weight: 760;
   letter-spacing: 0.14em;
-  margin: 0 0 0.9rem;
+  margin: 0 0 0.45rem;
   text-transform: uppercase;
 }
 
 .intro h1 {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(2.65rem, 6vw, 5.4rem);
+  font-size: clamp(2.15rem, min(5vw, 5.5vh), 4.5rem);
   font-weight: 500;
   letter-spacing: -0.065em;
   line-height: 0.98;
@@ -152,8 +159,8 @@
 
 .intro > p:last-child {
   color: var(--muted-foreground);
-  font-size: clamp(1rem, 1.8vw, 1.22rem);
-  margin: 1rem 0 0;
+  font-size: clamp(0.88rem, 1.35vw, 1.08rem);
+  margin: 0.55rem 0 0;
 }
 
 .mode-switcher {
@@ -177,8 +184,8 @@
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  min-height: 66px;
-  padding: 0.75rem 1.1rem;
+  min-height: 56px;
+  padding: 0.55rem 0.85rem;
   text-align: left;
   transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
@@ -226,16 +233,19 @@
 
 .product-grid {
   display: grid;
+  flex: 1 1 auto;
   gap: 1rem;
   grid-template-columns: minmax(0, 1.04fr) minmax(360px, 0.96fr);
   margin: 0 auto;
   max-width: 1440px;
+  min-height: 0;
+  width: 100%;
 }
 
 .timer-column {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  height: 100%;
   min-width: 0;
 }
 
@@ -251,8 +261,9 @@
   background: var(--card);
   display: flex;
   flex-direction: column;
-  height: 735px;
-  padding: clamp(1.4rem, 3vw, 2.4rem);
+  height: 100%;
+  min-height: 0;
+  padding: clamp(1rem, min(2vw, 2.2vh), 1.8rem);
   transition: background 400ms ease;
 }
 
@@ -280,11 +291,11 @@
   background: conic-gradient(#d97757 var(--timer-progress), #e9e3d8 0);
   border-radius: 50%;
   display: flex;
-  height: clamp(280px, 31vw, 360px);
+  height: clamp(200px, min(26vw, 30vh), 320px);
   justify-content: center;
-  margin: clamp(2rem, 5vw, 4rem) 0 2rem;
+  margin: clamp(0.8rem, 1.8vh, 1.25rem) 0 clamp(0.7rem, 1.4vh, 1rem);
   padding: 7px;
-  width: clamp(280px, 31vw, 360px);
+  width: clamp(200px, min(26vw, 30vh), 320px);
 }
 
 .timer-face {
@@ -314,14 +325,15 @@
 .timer-actions { display: flex; gap: 0.6rem; justify-content: center; }
 .timer-actions button { border-radius: 999px; height: 3rem; }
 .timer-actions .primary-action { min-width: 142px; padding: 0 1.25rem; }
-.timer-support { margin-top: 1.15rem; min-height: 104px; width: min(100%, 460px); }
+.timer-support { margin-top: clamp(0.55rem, 1.2vh, 0.85rem); min-height: 88px; width: min(100%, 460px); }
 .timer-footnote { color: var(--muted-foreground); font-size: 0.78rem; line-height: 1.55; margin: 0 0 0.65rem; text-align: center; }
 
 .training-card {
   background: #252520;
   color: #faf7ef;
-  height: 735px;
-  padding: clamp(1.5rem, 3vw, 2.4rem);
+  height: 100%;
+  min-height: 0;
+  padding: clamp(1rem, min(2vw, 2.2vh), 1.8rem);
 }
 
 .training-card::before {
@@ -336,19 +348,19 @@
 }
 
 .training-topline { color: #b8b4aa; display: flex; font-size: 0.72rem; justify-content: space-between; letter-spacing: 0.05em; position: relative; }
-.training-card h2 { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 500; letter-spacing: -0.05em; line-height: 1.08; margin: 1.1rem 0 0.5rem; position: relative; }
+.training-card h2 { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(1.65rem, min(3.4vw, 4vh), 2.7rem); font-weight: 500; letter-spacing: -0.05em; line-height: 1.08; margin: 0.65rem 0 0.35rem; position: relative; }
 .training-subtitle { color: #aaa69c; font-size: 0.8rem; margin: 0; position: relative; }
 
 .training-stage {
   align-items: center;
   display: grid;
   grid-template-columns: minmax(160px, 0.9fr) minmax(150px, 1.1fr);
-  margin: 1.15rem 0 0.8rem;
-  min-height: 270px;
+  margin: clamp(0.45rem, 1vh, 0.8rem) 0 0.5rem;
+  min-height: clamp(180px, 24vh, 230px);
   position: relative;
 }
 
-.mark-halo { align-items: center; display: flex; height: 245px; justify-content: center; position: relative; }
+.mark-halo { align-items: center; display: flex; height: clamp(175px, 23vh, 220px); justify-content: center; position: relative; }
 .mark-halo::before, .mark-halo::after { border: 1px solid #d9775738; border-radius: 50%; content: ''; position: absolute; }
 .mark-halo::before { height: 172px; width: 172px; }
 .mark-halo::after { height: 126px; transition: transform 180ms ease-out; width: 126px; }
@@ -373,10 +385,10 @@
 .training-cue strong { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(1.35rem, 2.6vw, 2rem); font-weight: 500; letter-spacing: -0.035em; }
 .training-cue span { color: #aaa69c; font-size: 0.78rem; }
 .training-countdown { align-items: baseline; color: #faf7ef !important; display: flex; gap: 0.35rem; line-height: 0.9; margin: 0.2rem 0; }
-.training-countdown b { font-size: clamp(3.8rem, 6vw, 5.4rem); font-variant-numeric: tabular-nums; font-weight: 480; letter-spacing: -0.08em; }
+.training-countdown b { font-size: clamp(3.25rem, min(5.5vw, 7vh), 4.8rem); font-variant-numeric: tabular-nums; font-weight: 480; letter-spacing: -0.08em; }
 .training-countdown small { color: #aaa69c; font-size: 0.78rem; }
 
-.training-progress { background: #1c1c18; border: 1px solid #3a3933; border-radius: 1rem; margin-bottom: 0.8rem; padding: 0.75rem 0.85rem; }
+.training-progress { background: #1c1c18; border: 1px solid #3a3933; border-radius: 1rem; margin-bottom: 0.6rem; padding: 0.6rem 0.75rem; }
 .training-progress > div:first-child { align-items: center; color: #aaa69c; display: flex; font-size: 0.7rem; justify-content: space-between; margin-bottom: 0.55rem; }
 .training-progress > div:first-child b { color: #e6e1d7; font-size: 0.72rem; }
 .training-progress-dots { display: grid; gap: 0.3rem; grid-template-columns: repeat(15, 1fr); }
@@ -385,12 +397,12 @@
 .training-progress-dots i.is-current { background: #f0b099; transform: scaleY(1.5); }
 
 .training-actions { display: grid; gap: 0.55rem; grid-template-columns: minmax(0, 1fr) auto; }
-.training-button { background: #d97757; border-radius: 999px; color: #1f1e1a; height: 3rem; }
+.training-button { background: #d97757; border-radius: 999px; color: #1f1e1a; height: 2.7rem; }
 .training-button:hover { background: #e18767; }
-.training-restart { background: transparent; border-color: #504e46; border-radius: 999px; color: #e7e2d8; height: 3rem; padding: 0 1.1rem; }
+.training-restart { background: transparent; border-color: #504e46; border-radius: 999px; color: #e7e2d8; height: 2.7rem; padding: 0 1.1rem; }
 .training-restart:hover { background: #34332d; color: #fffaf1; }
 
-.safety-note { border-top: 1px solid #3c3b35; color: #9e9a91; font-size: 0.69rem; line-height: 1.55; margin-top: 1.35rem; padding-top: 1rem; }
+.safety-note { border-top: 1px solid #3c3b35; color: #9e9a91; font-size: 0.68rem; line-height: 1.45; margin-top: 0.75rem; padding-top: 0.7rem; }
 .safety-note strong { color: #d9d5cb; font-size: 0.72rem; }
 .safety-note p { margin: 0.25rem 0 0; }
 
@@ -433,10 +445,11 @@
   z-index: 80;
 }
 
-footer { align-items: start; color: var(--muted-foreground); display: flex; font-size: 0.7rem; justify-content: space-between; margin: 0 auto; max-width: 1440px; padding: 1.5rem 0 0; }
+footer { align-items: start; color: var(--muted-foreground); display: flex; flex: 0 0 auto; font-size: 0.68rem; justify-content: space-between; margin: 0 auto; max-width: 1440px; padding: 0.65rem 0 0; width: 100%; }
 footer p { margin: 0; text-align: right; }
 
 @media (max-width: 900px) {
+  .site-shell { height: auto; min-height: 100vh; overflow: visible; padding-bottom: 2rem; }
   .product-grid { grid-template-columns: 1fr; }
   .timer-card, .training-card { height: auto; min-height: 735px; }
   .timer-card { padding-bottom: 2rem; }
