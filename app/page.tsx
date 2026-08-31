@@ -14,17 +14,6 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogMedia,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 
 type TimerMode = 'standard' | 'focus' | 'custom';
 type TimerPhase = 'sit' | 'move';
@@ -360,21 +349,29 @@ export default function Home() {
         </article>
       </section>
 
-      <AlertDialog onOpenChange={setBreakAlertOpen} open={breakAlertOpen}>
-        <AlertDialogContent className="movement-alert">
-          <AlertDialogHeader>
-            <AlertDialogMedia className="movement-alert-icon"><Footprints /></AlertDialogMedia>
-            <AlertDialogTitle>该起来活动一下啦</AlertDialogTitle>
-            <AlertDialogDescription>
-              轻走、接杯水或舒展 {durations.move} 分钟。活动比只站在原地更有帮助。
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={snoozeBreak}>延后 5 分钟</AlertDialogCancel>
-            <AlertDialogAction onClick={() => setBreakAlertOpen(false)}>现在起身</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {breakAlertOpen && (
+        <div className="movement-alert-overlay" role="presentation">
+          <section
+            aria-describedby="movement-alert-description"
+            aria-labelledby="movement-alert-title"
+            aria-modal="true"
+            className="movement-alert"
+            role="alertdialog"
+          >
+            <div className="movement-alert-icon"><Footprints /></div>
+            <div>
+              <h2 id="movement-alert-title">该起来活动一下啦</h2>
+              <p id="movement-alert-description">
+                轻走、接杯水或舒展 {durations.move} 分钟。活动比只站在原地更有帮助。
+              </p>
+            </div>
+            <div className="movement-alert-actions">
+              <Button onClick={snoozeBreak} variant="outline">延后 5 分钟</Button>
+              <Button onClick={() => setBreakAlertOpen(false)}>现在起身</Button>
+            </div>
+          </section>
+        </div>
+      )}
 
       <footer><span>SitWell MVP</span><p>轻量提醒工具，不替代医疗诊断或个体化盆底康复方案。</p></footer>
     </main>
