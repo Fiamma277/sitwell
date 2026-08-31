@@ -80,7 +80,13 @@ export default function Home() {
 
   const currentTotal = durations[phase] * 60;
   const progress = Math.max(0, Math.min(1, 1 - remaining / currentTotal));
-  const trainingPhase = trainingSeconds % TRAINING_CYCLE_SECONDS < 3 ? 'contract' : 'relax';
+  const trainingInProgress =
+    trainingActive || (trainingSeconds > 0 && trainingSeconds < TRAINING_TOTAL_SECONDS);
+  const trainingPhase = trainingInProgress
+    ? trainingSeconds % TRAINING_CYCLE_SECONDS < 3
+      ? 'contract'
+      : 'relax'
+    : 'relax';
   const trainingCountdown = 3 - (trainingSeconds % 3);
   const trainingRound = Math.min(
     TRAINING_ROUNDS,
@@ -328,7 +334,7 @@ export default function Home() {
           <h2>跟着图标，收紧与放松 🌼</h2>
           <p className="training-subtitle">3 秒收紧 · 3 秒放松 · 15 次为一组</p>
 
-          <div className={`training-stage ${trainingPhase}`}>
+          <div className={`training-stage ${trainingPhase} ${trainingInProgress ? 'is-training' : 'is-idle'}`}>
             <div className="mark-halo"><ClaudeMark /></div>
             <div aria-live="polite" className="training-cue">
               {trainingSeconds >= TRAINING_TOTAL_SECONDS ? (
@@ -376,9 +382,13 @@ export default function Home() {
           </div>
 
           <div className="safety-note">
-            <strong>动作提示</strong>
-            <p>保持自然呼吸，避免同时夹紧臀部或大腿；每次收紧后都要充分放松。</p>
-            <p>如感到疼痛或明显不适，请暂停训练并咨询专业人士。</p>
+            <strong>动作要领</strong>
+            <ul className="training-tips">
+              <li><b>1</b><span>坐稳或站稳，肩颈放松，保持自然呼吸。</span></li>
+              <li><b>2</b><span>轻轻向内、向上收紧盆底肌。</span></li>
+              <li><b>3</b><span>臀部和大腿保持放松，不憋气、不向下用力。</span></li>
+              <li><b>4</b><span>每次收紧后完全放松；疼痛或不适请停止。</span></li>
+            </ul>
           </div>
         </article>
       </section>

@@ -363,8 +363,10 @@
 .mark-halo { align-items: center; display: flex; height: clamp(175px, 23vh, 220px); justify-content: center; position: relative; }
 .mark-halo::before, .mark-halo::after { border: 1px solid #d9775738; border-radius: 50%; content: ''; position: absolute; }
 .mark-halo::before { height: 172px; width: 172px; }
-.mark-halo::after { height: 126px; transition: transform 180ms ease-out; width: 126px; }
-.training-stage.contract .mark-halo::after { transform: scale(0.55); }
+.mark-halo::after { height: 126px; width: 126px; }
+.training-stage.contract.is-training .mark-halo::after { animation: halo-contract 320ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.training-stage.relax.is-training .mark-halo::after { animation: halo-relax 360ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.training-stage.is-idle .mark-halo::after { opacity: 1; transform: scale(1); }
 
 .breathing-mark {
   color: #d97757;
@@ -373,13 +375,39 @@
   overflow: visible;
   position: relative;
   transform-origin: center;
-  transition: filter 180ms ease-out, transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
   width: 124px;
   will-change: transform;
 }
 
-.training-stage.contract .breathing-mark { filter: drop-shadow(0 5px 14px #d9775770); transform: scale(0.58) rotate(-5deg); }
-.training-stage.relax .breathing-mark { filter: drop-shadow(0 14px 30px #d9775740); transform: scale(1) rotate(0deg); }
+.training-stage.contract.is-training .breathing-mark { animation: mark-contract 320ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.training-stage.relax.is-training .breathing-mark { animation: mark-relax 360ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.training-stage.is-idle .breathing-mark { filter: drop-shadow(0 14px 30px #d9775740); transform: scale(1) rotate(0deg); }
+
+@keyframes mark-contract {
+  0% { filter: drop-shadow(0 14px 30px #d9775740); transform: scale(1) rotate(0deg); }
+  62% { filter: drop-shadow(0 4px 12px #d9775780); transform: scale(0.53) rotate(-6.5deg); }
+  82% { transform: scale(0.61) rotate(-4.4deg); }
+  100% { filter: drop-shadow(0 5px 14px #d9775770); transform: scale(0.58) rotate(-5deg); }
+}
+
+@keyframes mark-relax {
+  0% { filter: drop-shadow(0 5px 14px #d9775770); transform: scale(0.58) rotate(-5deg); }
+  60% { filter: drop-shadow(0 16px 34px #d9775745); transform: scale(1.06) rotate(1.3deg); }
+  82% { transform: scale(0.98) rotate(-0.4deg); }
+  100% { filter: drop-shadow(0 14px 30px #d9775740); transform: scale(1) rotate(0deg); }
+}
+
+@keyframes halo-contract {
+  0% { opacity: 1; transform: scale(1); }
+  66% { opacity: 0.55; transform: scale(0.48); }
+  100% { opacity: 0.75; transform: scale(0.55); }
+}
+
+@keyframes halo-relax {
+  0% { opacity: 0.75; transform: scale(0.55); }
+  62% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
 
 .training-cue { display: flex; flex-direction: column; gap: 0.35rem; }
 .training-cue strong { font-family: Georgia, 'Times New Roman', serif; font-size: clamp(1.35rem, 2.6vw, 2rem); font-weight: 500; letter-spacing: -0.035em; }
@@ -404,7 +432,9 @@
 
 .safety-note { border-top: 1px solid #3c3b35; color: #9e9a91; font-size: 0.68rem; line-height: 1.45; margin-top: 0.75rem; padding-top: 0.7rem; }
 .safety-note strong { color: #d9d5cb; font-size: 0.72rem; }
-.safety-note p { margin: 0.25rem 0 0; }
+.training-tips { display: grid; gap: 0.28rem 0.75rem; grid-template-columns: 1fr 1fr; list-style: none; margin: 0.35rem 0 0; padding: 0; }
+.training-tips li { align-items: start; display: flex; gap: 0.35rem; }
+.training-tips li b { align-items: center; background: #393831; border-radius: 50%; color: #d9d5cb; display: inline-flex; flex: 0 0 auto; font-size: 0.58rem; height: 1rem; justify-content: center; margin-top: 0.05rem; width: 1rem; }
 
 .movement-alert {
   background: #fffdf8;
