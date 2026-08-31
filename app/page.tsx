@@ -323,7 +323,7 @@ export default function Home() {
               <span><strong>专注模式</strong><small>少些打断</small></span><b>40 + 5</b>
             </button>
             <button aria-pressed={mode === 'custom'} className="mode-option" onClick={() => selectMode('custom')} type="button">
-              <span><strong>自定义</strong><small>按你的节奏</small></span><b>{customSit} + {customMove}</b>
+              <span><strong>自定义</strong><small>按你的节奏</small></span>
             </button>
           </section>
           </article>
@@ -331,7 +331,7 @@ export default function Home() {
 
         <article className="training-card">
           <div className="training-topline"><span>盆底肌训练</span><span>今日 {completedTraining} 组</span></div>
-          <h2>跟着图标，收紧与放松 🌼</h2>
+          <h2>跟着节奏，收紧与放松菊花</h2>
           <p className="training-subtitle">3 秒收紧 · 3 秒放松 · 15 次为一组</p>
 
           <div className={`training-stage ${trainingPhase} ${trainingInProgress ? 'is-training' : 'is-idle'}`}>
