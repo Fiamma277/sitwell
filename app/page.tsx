@@ -308,7 +308,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-          </article>
 
           <section aria-label="计时模式" className="mode-switcher">
             <button aria-pressed={mode === 'standard'} className="mode-option" onClick={() => selectMode('standard')} type="button">
@@ -321,6 +320,7 @@ export default function Home() {
               <span><strong>自定义</strong><small>按你的节奏</small></span><b>{customSit} + {customMove}</b>
             </button>
           </section>
+          </article>
         </div>
 
         <article className="training-card">
